@@ -1,0 +1,4 @@
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+0 0,6,12,18 * * * /usr/local/bin/php /var/www/html/app/console partkeepr:cron:run

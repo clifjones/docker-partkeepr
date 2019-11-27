@@ -2,11 +2,13 @@ version: "3"
 services:
 
   partkeepr:
-    image: mhubig/partkeepr:latest
+    # image: mhubig/partkeepr:latest
+    build: .
     environment:
-      - PARTKEEPR_DATABASE_HOST=database
+      - PARTKEEPR_DATABASE_HOST=pgsqldb
       - PARTKEEPR_DATABASE_NAME=partkeepr
-      - PARTKEEPR_DATABASE_PORT=3306
+      #- PARTKEEPR_DATABASE_PORT=3306
+      - PARTKEEPR_DATABASE_PORT=5432
       - PARTKEEPR_DATABASE_USER=partkeepr
       - PARTKEEPR_DATABASE_PASS=partkeepr
       - PARTKEEPR_OKTOPART_APIKEY
@@ -15,10 +17,10 @@ services:
     volumes:
       - partkeepr-data:/var/www/html/data
       - partkeepr-web:/var/www/html/web
-    depends_on:
-      - database
+    #depends_on:
+    #  - database
 
-  database:
+  mysqldb:
     image: mariadb:10.3
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
@@ -28,7 +30,19 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
+  pgsqldb:
+    image: sameersbn/postgresql:latest
+    environment:
+      - DB_NAME=partkeepr
+      - DB_USER=partkeepr
+      - DB_PASS=partkeepr
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgsql-data:/var/lib/postgresql
+
 volumes:
   partkeepr-data:
   partkeepr-web:
   mysql-data:
+  pgsql-data:
